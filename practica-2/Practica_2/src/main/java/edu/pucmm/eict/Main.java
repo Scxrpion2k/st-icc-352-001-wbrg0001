@@ -3,17 +3,49 @@ package edu.pucmm.eict;
 import edu.pucmm.eict.Clases.Database;
 import edu.pucmm.eict.Clases.Producto;
 import edu.pucmm.eict.Clases.Usuario;
+import edu.pucmm.eict.controladora.ControladoraCRUD;
 import io.javalin.Javalin;
+import io.javalin.rendering.template.JavalinThymeleaf;
 
+import javax.xml.crypto.Data;
 import java.math.BigDecimal;
+
+import static io.javalin.apibuilder.ApiBuilder.*;
+import static io.javalin.apibuilder.ApiBuilder.delete;
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.post;
+import static io.javalin.apibuilder.ApiBuilder.put;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
+
+
+
     public static void main(String[] args){
         Javalin app = Javalin.create(config -> {
             Usuario admin = new Usuario("admin","admin","admin");
+            config.fileRenderer(new JavalinThymeleaf());
+
+            config.staticFiles.add(staticFileConfig -> {
+                staticFileConfig.directory = "/Publico";
+                staticFileConfig.hostedPath = "/";
+            });
+
+            Producto producto2 = new Producto(1,"Mango",new BigDecimal(20.38));
+            Database.Productos.add(producto2);
+
+            config.routes.apiBuilder(() -> {
+
+                path("/Pagina_principal/", () -> {
+                    get(ctx -> ctx.redirect("/Pagina_principal/producto_listar"));
+                    get("/listarProducto", ControladoraCRUD::listar);
+
+
+                });
+            });
 
 
 
@@ -125,5 +157,7 @@ public class Main {
 
 
         });
+
+        app.start(7000);
     }
 }
