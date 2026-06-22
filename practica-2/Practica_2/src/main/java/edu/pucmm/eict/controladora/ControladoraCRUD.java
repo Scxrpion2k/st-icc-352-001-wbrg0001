@@ -5,6 +5,8 @@ import edu.pucmm.eict.Clases.Producto;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,18 @@ public class ControladoraCRUD {
         Map<String, Object> modelo = new HashMap<>();
         List<Producto> productos = Database.getProductos();
 
+        List<Producto> carrito = ctx.sessionAttribute("carrito");
+
+        int carritoContador;
+
+        if (carrito == null) {
+            carritoContador = 0;
+        } else {
+            carritoContador = carrito.size();
+        }
+
         modelo.put("productos",productos);
+        modelo.put("carritoCount", carritoContador);
         ctx.render("/html/Pagina_principal.html",modelo);
 
     }
@@ -56,6 +69,30 @@ public class ControladoraCRUD {
 
     public static void agregarProducto(@NotNull Context ctx) {
         Map<String, Object> modelo = new HashMap<>();
-        ctx.render("html/Agregar_Producto.html");
+        ctx.render("html/Agregar_Producto.html",modelo);
+    }
+
+    public static void carritoDeCompra(@NotNull Context ctx) {
+        List<Producto> carrito = ctx.sessionAttribute("carrito");
+        Map<String, Object> modelo = new HashMap<>();
+
+        if (carrito == null) {
+            carrito = new ArrayList<>();
+        }
+
+        int totalProductos = carrito.size();
+
+        BigDecimal totalPrecio = BigDecimal.ZERO;
+
+        for (Producto p : carrito) {
+            totalPrecio = totalPrecio.add(p.getPrecio());
+        }
+
+        modelo.put("productos", carrito);
+        modelo.put("totalProductos", totalProductos);
+        modelo.put("totalPrecio", totalPrecio);
+
+        ctx.render("html/Carrito_Compra.html", modelo);
+
     }
 }

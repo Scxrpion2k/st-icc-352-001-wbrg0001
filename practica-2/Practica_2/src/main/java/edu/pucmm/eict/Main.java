@@ -9,6 +9,8 @@ import io.javalin.rendering.template.JavalinThymeleaf;
 
 import javax.xml.crypto.Data;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 import static io.javalin.apibuilder.ApiBuilder.delete;
@@ -60,6 +62,7 @@ public class Main {
                     get("/administrar_producto",ControladoraCRUD::administrarProducto);
                     get("/agregar_producto",ControladoraCRUD::agregarProducto);
                     get("/modificar_producto/{id}",ControladoraCRUD::modificarProducto);
+                    get("/Carrito_de_compra",ControladoraCRUD::carritoDeCompra);
 
 
 
@@ -79,7 +82,7 @@ public class Main {
                        break;
                    }
                }
-               ctx.redirect("/");
+               ctx.redirect("/Pagina_principal/listarProducto");
             });
 
             config.routes.post("/productos/crear",ctx -> {
@@ -168,6 +171,54 @@ public class Main {
                 }
 
                 ctx.redirect("/Pagina_principal/administrar_producto");
+            });
+
+            config.routes.post("/Carrito/agregar", ctx -> {
+
+                int idProducto = Integer.parseInt(ctx.formParam("id"));
+
+                Producto productoSeleccionado = null;
+
+                for (Producto p : Database.getProductos()) {
+                    if (p.getId() == idProducto) {
+                        productoSeleccionado = p;
+                        break;
+                    }
+                }
+
+                if (productoSeleccionado != null) {
+
+                    List<Producto> carrito = ctx.sessionAttribute("carrito");
+
+                    if (carrito == null) {
+                        carrito = new ArrayList<>();
+                    }
+
+                    carrito.add(productoSeleccionado);
+
+                    ctx.sessionAttribute("carrito", carrito);
+                }
+
+                ctx.redirect("/Pagina_principal/listarProducto");
+            });
+
+            config.routes.post("/Carrito/eliminar", ctx -> {
+
+                int id = Integer.parseInt(ctx.formParam("id"));
+
+                List<Producto> carrito = ctx.sessionAttribute("carrito");
+
+                if (carrito != null) {
+                    for (int i = 0; i < carrito.size(); i++) {
+                        if (carrito.get(i).getId() == id) {
+                            carrito.remove(i);
+                            break;
+                        }
+                    }
+                    ctx.sessionAttribute("carrito", carrito);
+                }
+
+                ctx.redirect("/Pagina_principal/Carrito_de_compra");
             });
 
 
