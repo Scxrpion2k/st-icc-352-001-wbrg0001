@@ -1,10 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Carrito de compras</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Productos</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
+
 <body>
+
+
+<nav class="navbar navbar-dark bg-dark px-3">
+
+    <span class="navbar-brand">Mi Tienda</span>
+
+
+    <div>
+    </div>
+
+
+    <a class="btn btn-primary" th:href="@{/Pagina_principal}">
+        Volver
+    </a>
+
+</nav>
+
+
+<div class="container mt-4">
+
+    <div class="row">
+        <div class="col d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">Administrar Productos</h2>
+
+            <a class = "btn btn-primary" href="/agregar_productos"
+               th:href = "@{'/Pagina_principal/agregar_producto'}">
+                Agregar producto
+
+            </a>
+
+
+        </div>
+    </div>
+
+
+    <div class="row mt-3">
+        <div class="col">
+
+            <table class="table table-striped table-hover">
+
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="producto : ${productos}">
+                    <td th:text="${producto.id}"></td>
+                    <td th:text="${producto.nombre}"></td>
+                    <td th:text="${producto.precio}"></td>
+
+                    <td>
+                        <a class ="btn btnModificarProducto"
+                           th:href = "@{'/Pagina_principal/modificar_producto/' + ${producto.id}}">
+                            Modificar
+
+
+                        </a>
+
+                        <form th:action="@{/Productos/eliminar}" method="post" style="display:inline;">
+
+                            <input type="hidden" name="id" th:value="${producto.id}">
+
+                            <button type="submit"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('¿Seguro que deseas eliminar este producto?');">
+                                Eliminar
+                            </button>
+
+                        </form>
+
+                    </td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
 
 </body>
 </html>

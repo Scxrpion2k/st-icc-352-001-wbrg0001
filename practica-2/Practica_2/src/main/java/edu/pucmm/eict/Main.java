@@ -34,18 +34,38 @@ public class Main {
                 staticFileConfig.hostedPath = "/";
             });
 
-            Producto producto2 = new Producto(1,"Mango",new BigDecimal(20.38));
+            Producto producto1 = new Producto(1, "Mango", new BigDecimal("20.38"));
+            Database.Productos.add(producto1);
+
+            Producto producto2 = new Producto(2, "Manzana", new BigDecimal("15.50"));
             Database.Productos.add(producto2);
+
+            Producto producto3 = new Producto(3, "Banana", new BigDecimal("10.00"));
+            Database.Productos.add(producto3);
+
+            Producto producto4 = new Producto(4, "Piña", new BigDecimal("35.75"));
+            Database.Productos.add(producto4);
+
+            Producto producto5 = new Producto(5, "Uva", new BigDecimal("28.90"));
+            Database.Productos.add(producto5);
+
+            Producto producto6 = new Producto(6, "Sandía", new BigDecimal("45.00"));
+            Database.Productos.add(producto6);
 
             config.routes.apiBuilder(() -> {
 
                 path("/Pagina_principal/", () -> {
-                    get(ctx -> ctx.redirect("/Pagina_principal/producto_listar"));
+                    get(ctx -> ctx.redirect("/Pagina_principal/listarProducto"));
                     get("/listarProducto", ControladoraCRUD::listar);
+                    get("/administrar_producto",ControladoraCRUD::administrarProducto);
+                    get("/agregar_producto",ControladoraCRUD::agregarProducto);
+                    get("/modificar_producto/{id}",ControladoraCRUD::modificarProducto);
+
 
 
                 });
             });
+
 
 
 
@@ -88,7 +108,7 @@ public class Main {
 
                 Database.Productos.add(producto);
 
-                ctx.redirect("/");
+                ctx.redirect("/Pagina_principal/administrar_producto");
 
 
             });
@@ -112,7 +132,7 @@ public class Main {
                    }
                }
 
-               ctx.redirect("/Productos");
+               ctx.redirect("/Pagina_principal/administrar_producto");
 
             });
 
@@ -147,7 +167,7 @@ public class Main {
                     }
                 }
 
-                ctx.redirect("/Productos");
+                ctx.redirect("/Pagina_principal/administrar_producto");
             });
 
 
