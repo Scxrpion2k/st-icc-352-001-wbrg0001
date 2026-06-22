@@ -38,11 +38,11 @@
         <div class="col d-flex justify-content-between align-items-center">
             <h2 class="mb-0">Carrito de compra</h2>
 
-            <a class = "btn btn-primary" href="/agregar_productos"
-               th:href = "@{'/Pagina_principal/agregar_producto'}">
-                Procesar compra
-
-            </a>
+                <form th:action="@{/Carrito/procesar_compra}" method="post">
+                    <button type="submit" class="btn btn-primary">
+                        Procesar compra
+                    </button>
+                </form>
 
 
         </div>

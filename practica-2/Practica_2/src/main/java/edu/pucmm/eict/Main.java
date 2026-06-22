@@ -3,13 +3,16 @@ package edu.pucmm.eict;
 import edu.pucmm.eict.Clases.Database;
 import edu.pucmm.eict.Clases.Producto;
 import edu.pucmm.eict.Clases.Usuario;
+import edu.pucmm.eict.Clases.VentasProductos;
 import edu.pucmm.eict.controladora.ControladoraCRUD;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
 import javax.xml.crypto.Data;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -221,11 +224,32 @@ public class Main {
                 ctx.redirect("/Pagina_principal/Carrito_de_compra");
             });
 
+            config.routes.post("/Carrito/procesar_compra",ctx -> {
+               List<Producto> carrito = ctx.sessionAttribute("carrito");
+
+               if (carrito == null || carrito.isEmpty()){
+                   ctx.redirect("/Pagina_principal/Carrito_de_compra");
+                   return;
+               }
 
 
+               Usuario usuario = ctx.sessionAttribute("usuario");
 
+               String nombreUsuario;
 
+               if(usuario == null){
+                   nombreUsuario = "Invitado";
+               } else{
+                   nombreUsuario = usuario.getNombre();
+               }
 
+                VentasProductos venta = new VentasProductos(Database.getVentas().size()+1, new Date(),nombreUsuario,new ArrayList<>(carrito));
+                Database.Ventas.add(venta);
+
+                ctx.sessionAttribute("carrito",new ArrayList<Producto>());
+                ctx.redirect("/Pagina_principal/listarProducto");
+
+            });
 
         });
 
