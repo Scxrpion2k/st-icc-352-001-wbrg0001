@@ -32,6 +32,7 @@ public class Main {
     public static void main(String[] args){
         Javalin app = Javalin.create(config -> {
             Usuario admin = new Usuario("admin","admin","admin");
+            Database.usuarios.add(admin);
             config.fileRenderer(new JavalinThymeleaf());
 
             config.staticFiles.add(staticFileConfig -> {
@@ -66,10 +67,28 @@ public class Main {
                     get("/agregar_producto",ControladoraCRUD::agregarProducto);
                     get("/modificar_producto/{id}",ControladoraCRUD::modificarProducto);
                     get("/Carrito_de_compra",ControladoraCRUD::carritoDeCompra);
+                    get("/listarVentas",ControladoraCRUD::listarVenta);
 
 
 
                 });
+            });
+
+            config.routes.get("/login",ctx -> {
+               ctx.render("Publico/Login.html");
+            });
+
+            config.routes.before("/Pagina_principal/*",ctx -> {
+               String path = ctx.path();
+
+               if(path.contains("administrar_producto") || path.contains("agregar_producto")||
+               path.contains("modificar_producto") || path.contains("listarVentas")){
+                   Usuario usuario = ctx.sessionAttribute("usuario");
+
+                   if(usuario == null || !usuario.getNombre().equals("admin")||!usuario.getPassword().equals("admin")){
+                       ctx.redirect("/login");
+                   }
+               }
             });
 
 

@@ -2,6 +2,7 @@ package edu.pucmm.eict.controladora;
 
 import edu.pucmm.eict.Clases.Database;
 import edu.pucmm.eict.Clases.Producto;
+import edu.pucmm.eict.Clases.VentasProductos;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
 
@@ -95,4 +96,14 @@ public class ControladoraCRUD {
         ctx.render("html/Carrito_Compra.html", modelo);
 
     }
+
+    public static void listarVenta(@NotNull Context ctx) {
+        Map<String, Object> modelo = new HashMap<>();
+        List<VentasProductos> ventas = Database.getVentas();
+
+        modelo.put("ventas",ventas);
+        ctx.render("html/Ventas.html",modelo);
+    }
+
+
 }
