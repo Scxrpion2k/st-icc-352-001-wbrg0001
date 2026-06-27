@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Productos</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-dark bg-dark px-3">
+
+    <span class="navbar-brand">Mi Tienda</span>
+
+
+
+
+    <div>
+        <a href="/Pagina_principal/administrar_producto" class="text-white me-3">Administrar productos</a>
+        <a href="/Pagina_principal/listarVentas" class="text-white me-3">Ver ventas</a>
+    </div>
+
+
+    <div>
+        <a href="/Pagina_principal/Carrito_de_compra" class="btn btn-primary">
+            🛒 Carrito
+            <span class="badge bg-danger ms-1" th:text="${carritoCount}">0</span>
+        </a>
+    </div>
+
+</nav>
+
+
+<div class="container mt-4">
+
+    <div class="row">
+        <div class="col d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">Productos disponibles</h2>
+
+
+        </div>
+    </div>
+
+
+    <div class="row mt-3">
+        <div class="col">
+
+            <table class="table table-striped table-hover">
+
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="producto : ${productos}">
+                        <td th:text="${producto.id}"></td>
+                        <td th:text="${producto.nombre}"></td>
+                        <td th:text="${producto.precio}"></td>
+
+                        <td>
+                            <form th:action="@{/Carrito/agregar}"
+                                  method="post"
+                                  style="display:inline;">
+
+                                <input type="hidden"
+                                       name="id"
+                                       th:value="${producto.id}">
+
+                                <button type="submit"
+                                        class="btn btn-success btn-sm">
+                                    Agregar al carrito
+                                </button>
+
+                            </form>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
