@@ -8,7 +8,7 @@ public class Main {
         Javalin app = Javalin.create(config ->{
 
         config.routes.get("/",ctx -> {
-           ctx.result("Prueba");
+           ctx.result("Aplicacion 1");
         });
 
         });
