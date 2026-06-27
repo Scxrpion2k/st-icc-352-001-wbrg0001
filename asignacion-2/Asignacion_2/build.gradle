@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'edu.pucmm.eict'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+application{
+    mainClass = 'edu.pucmm.eict.Main'
+
+}
+
+
+dependencies {
+
+    implementation 'io.javalin:javalin:7.2.2'
+    implementation 'com.h2database:h2:2.3.232'
+    testImplementation platform('org.junit:junit-bom:6.0.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
