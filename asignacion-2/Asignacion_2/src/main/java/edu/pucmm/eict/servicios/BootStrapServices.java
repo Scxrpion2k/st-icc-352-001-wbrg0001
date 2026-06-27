@@ -1,4 +1,4 @@
-package servicio;
+package edu.pucmm.eict.servicios;
 
 import org.h2.tools.Server;
 
@@ -9,7 +9,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class BootStrapService {
+public class BootStrapServices {
+
 
     /** Host donde escucha el servidor TCP de H2. */
     private static final String TCP_HOST = "localhost";
@@ -88,6 +89,7 @@ public class BootStrapService {
         try (Connection con = DataBaseServices.getInstancia().getConexion();
              Statement statement = con.createStatement()) {
             statement.execute(sql);
+
         }
     }
 }
