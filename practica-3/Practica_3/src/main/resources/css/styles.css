@@ -1,0 +1,22 @@
+body {
+    background: #f5f6fa;
+}
+
+.btnEliminarProducto{
+    background-color: red;
+    color: black;
+}
+
+.btnModificarProducto{
+    background-color: green;
+    color: black;
+}
+.btnGuardarProducto{
+    background-color: green;
+    color: black;
+}
+
+.btnCancelarProducto{
+    background-color: darkred;
+    color: black;
+}
