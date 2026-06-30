@@ -91,6 +91,10 @@ public class Main {
                }
             });
 
+            config.routes.get("/*",ctx -> {
+                ctx.redirect("/Pagina_principal/listarProducto");
+            });
+
 
 
 

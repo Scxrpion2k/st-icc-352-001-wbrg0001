@@ -74,6 +74,10 @@ public class Main {
                 });
             });
 
+            config.routes.get("/*",ctx -> {
+                ctx.redirect("/Pagina_principal/listarProducto");
+            });
+
             config.routes.get("/login",ctx -> {
                ctx.render("Publico/Login.html");
             });
